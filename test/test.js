@@ -1,13 +1,10 @@
 const fs = require('fs');
-const readline = require('readline');
 const {Builder, By, Key, until} = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome');
 const assert = require('assert');
 let driver;
 let login;
 let url;
-
-//login logout
 
 async function login_logout() {
   driver = await new Builder().forBrowser('chrome')
@@ -36,25 +33,20 @@ async function login_logout() {
   }
 }
 
-login_logout();
-//keypad();
-//upload files
-
 function create_file(file, content)
 {
-  fs.appendFile('test/test_files/' + file, content, function (err) {
+  fs.appendFile(file, content, function (err) {
     if (err) throw err;
     console.log('Saved!');
   });
 }
 function delete_file(file)
 {
-  fs.unlink('test/test_files/' + file, function (err) {
+  fs.unlink(file, function (err) {
     if (err) throw err;
     console.log('Deleted!');
   });
 }
-
 
 async function upload() {
   driver = await new Builder().forBrowser('firefox').build();
@@ -67,13 +59,13 @@ async function upload() {
     await driver.get('http://uitestpractice.com/Students/Widgets');
     let upl = await driver.findElement(By.id('image_file'));
     let but = driver.findElement(By.xpath("//input[@type='button']"));
-    await upl.sendKeys(process.cwd() + '/test/test_files/test_1.txt');
+    await upl.sendKeys(process.cwd() + '/test_1.txt');
     await but.click();
     await driver.wait(until.elementLocated(By.className("ContactUs")), 50000);
-    await upl.sendKeys(process.cwd() + '/test/test_files/test_2.txt');
+    await upl.sendKeys(process.cwd() + '/test_2.txt');
     await but.click();
     await driver.wait(until.elementLocated(By.className("ContactUs")), 50000);
-    await upl.sendKeys(process.cwd() + '/test/test_files/test_3.txt');
+    await upl.sendKeys(process.cwd() + '/test_3.txt');
     await but.click();
   } finally {
     await  delete_file("test_1.txt");
@@ -84,8 +76,6 @@ async function upload() {
     keypad();
   }
 }
-
-//test keypad
 
 async function keypad() {
   driver = await new Builder().forBrowser('chrome').build();
@@ -112,10 +102,10 @@ async function keypad() {
   }
 }
 
-//screenshots in browser
-
 function write_screen(file, driver)
 {
+  if(!fs.existsSync('screenshots'))
+    fs.mkdirSync('screenshots');
   driver.takeScreenshot().then(
     function(image, err) {
         fs.writeFile('screenshots/' + file, image, 'base64', function(err) {
@@ -148,8 +138,6 @@ async function screenshots() {
   }
 }
 
-//headless enviroment
-
 async function headless() {
   driver = await new Builder().forBrowser('chrome')
   .setChromeOptions(new chrome.Options().headless())
@@ -169,8 +157,6 @@ async function headless() {
     frames_alerts();
   }
 }
-
-// frames_alerts
 
 async function frames_alerts() {
   driver = await new Builder().forBrowser('chrome')
@@ -195,8 +181,6 @@ async function frames_alerts() {
   }
 };
 
-//js_inside
-
 async function js_inside() {
   driver = await new Builder().forBrowser('chrome')
   .build();
@@ -212,3 +196,5 @@ async function js_inside() {
     await driver.quit();
   }
 }
+
+login_logout();
