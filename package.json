@@ -1,0 +1,17 @@
+{
+    "name": "test_cases",
+    "version": "1.0.0",
+    "description": "",
+    "main": "test.js",
+    "author": "imarakho",
+    "scripts": {
+      "run": "node server.js"
+    },
+    "devDependencies": {
+
+    },
+    "dependencies": {
+    "selenium-webdriver": "^4.0.0-alpha.1",
+    "npm": "^5.8.0"
+    }
+  }
